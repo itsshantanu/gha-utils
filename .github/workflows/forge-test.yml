@@ -72,12 +72,15 @@ jobs:
           toolchain: stable
           override: true
 
+      - name: List files in foundry/
+        run: ls -la foundry
+
       # Cache Foundry repository
       - name: Cache Foundry repository
         uses: actions/cache@v3
         with:
           path: foundry
-          key: ${{ runner.os }}-foundry-${{ hashFiles('foundry/**') }}
+          key: ${{ runner.os }}-foundry-v1
           restore-keys: |
             ${{ runner.os }}-foundry-
 
@@ -86,7 +89,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: $HOME/.config/.foundry/bin
-          key: ${{ runner.os }}-forge-${{ hashFiles('foundry/**') }}
+          key: ${{ runner.os }}-forge-v1
           restore-keys: |
             ${{ runner.os }}-forge-
 
