@@ -47,6 +47,8 @@ on:
         type: "string"
 
     secrets:
+      API_KEY_BUILDBEAR:
+        required: true
       API_KEY_INFURA:
         required: false
       MAINNET_RPC_URL:
@@ -55,6 +57,7 @@ on:
 jobs:
   forge-test:
     env:
+      API_KEY_BUILDBEAR: ${{ secrets.API_KEY_BUILDBEAR }}
       API_KEY_INFURA: ${{ secrets.API_KEY_INFURA }}
       FOUNDRY_INVARIANT_DEPTH: ${{ inputs.foundry-invariant-depth }}
       FOUNDRY_INVARIANT_RUNS: ${{ inputs.foundry-invariant-runs }}
@@ -66,11 +69,14 @@ jobs:
       - name: "Check out the repo"
         uses: "actions/checkout@v4"
 
-      - name: "Install Foundry"
-        uses: "foundry-rs/foundry-toolchain@v1"
+      - name: "Install BuildBear's Foundry Fork"
+        run: |
+          curl -L https://raw.githubusercontent.com/BuildBearLabs/foundry/master/foundryup/install | bash
+          foundryup
+        shell: bash
 
       - name: "Restore the cached build"
-        uses: "sablier-labs/gha-utils/.github/actions/evm-cache@main"
+        uses: "onlyonejmjq/gha-utils/.github/actions/evm-cache@main"
         with:
           cache-path: ${{ inputs.cache-path }}
           fail-on-cache-miss: true
@@ -83,6 +89,18 @@ jobs:
 
       - name: "Run the tests"
         run: 'forge test --match-path "${{ inputs.match-path }}"'
+
+      - name: Run BB Action CI
+        uses: BuildBearLabs/buildbear_x_action@v1.0.0
+        with:
+          network: |
+            [
+              {
+                "chainId": 1
+              }
+            ]
+          deploy-command: "make deploy"
+          buildbear-token: "${{ secrets.API_KEY_BUILDBEAR }}"
 
       - name: "Add summary"
         run: | # shell
