@@ -1,6 +1,7 @@
 name: "Test a Forge project"
 
 on:
+  push:
   workflow_call:
     inputs:
       cache-path:
@@ -88,10 +89,10 @@ jobs:
           echo "FOUNDRY_FUZZ_SEED=$seed" >> $GITHUB_ENV
 
       - name: "Run the tests"
-        run: 'forge test --match-path "${{ inputs.match-path }}"'
+        run: forge test --match-path "${{ inputs.match-path }}"
 
-      - name: Run BB Action CI
-        uses: BuildBearLabs/buildbear_x_action@v1.0.0
+      - name: "Run BB Action CI"
+        uses: BuildBearLabs/buildbear_x_action@v1.6.1
         with:
           network: |
             [
@@ -103,6 +104,6 @@ jobs:
           buildbear-token: "${{ secrets.API_KEY_BUILDBEAR }}"
 
       - name: "Add summary"
-        run: | # shell
+        run: |
           echo "## Result for ${{ inputs.name }}" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
