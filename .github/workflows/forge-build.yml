@@ -51,6 +51,7 @@ jobs:
           bun-version: "latest"
 
       - name: "Install the Node.js dependencies"
+        if: ${{ exists('package.json') }}
         run: "bun install --frozen-lockfile"
 
       - name: "Show the Forge config"
