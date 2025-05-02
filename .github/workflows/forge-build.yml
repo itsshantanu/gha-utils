@@ -50,9 +50,22 @@ jobs:
         with:
           bun-version: "latest"
 
-      - name: "Install the Node.js dependencies"
-        if: ${{ exists('package.json') }}
-        run: "bun install --frozen-lockfile"
+      - name: "Check for package.json"
+        id: check_package
+        run: |
+          if [ -f "package.json" ]; then
+            echo "found=true" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: "Install Node.js dependencies"
+        if: steps.check_package.outputs.found == 'true'
+        run: bun install --frozen-lockfile
+
+      - name: "Lint the code"
+        if: steps.check_package.outputs.found == 'true'
+        run: bun run lint
 
       - name: "Show the Forge config"
         run: "forge config"
