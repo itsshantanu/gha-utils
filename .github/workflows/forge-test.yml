@@ -106,4 +106,4 @@ jobs:
       - name: "Add summary"
         run: |
           echo "## Result for ${{ inputs.name }}" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Passed" >> $GITHUB_STEP_SUMMAR
