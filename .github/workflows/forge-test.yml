@@ -4,10 +4,14 @@ on:
   push:
   workflow_call:
     inputs:
-    cache-path:
-      default: "cache node_modules out out-optimized"
-      required: false
-      type: "string"
+      cache-path:
+        default: |
+          cache
+          node_modules
+          out
+          out-optimized
+        required: false
+        type: "string"
 
       foundry-fuzz-runs:
         default: 1000
@@ -109,13 +113,6 @@ jobs:
       - name: Show Forge version
         run: |
           forge --version
-
-      - name: Debug cache path
-        run: |
-          for path in ${{ inputs.cache-path }}; do
-            echo "Listing $path"
-            ls -la "$path" || echo "$path not found"
-          done
 
       - name: "Restore the cached build"
         uses: "itsshantanu/gha-utils/.github/actions/evm-cache@main"
