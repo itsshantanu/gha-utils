@@ -7,6 +7,11 @@ on:
   workflow_dispatch:
 
 jobs:
+  lint:
+    name: EVM Lint
+    uses: itsshantanu/gha-utils/.github/workflows/evm-lint.yml@main
+    secrets: inherit
+
   build:
     name: Forge Build
     uses: itsshantanu/gha-utils/.github/workflows/forge-build.yml@main
