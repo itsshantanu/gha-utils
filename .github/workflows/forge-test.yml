@@ -48,7 +48,7 @@ on:
 
     secrets:
       API_KEY_BUILDBEAR:
-        required: true
+        required: false
       API_KEY_INFURA:
         required: false
       MAINNET_RPC_URL:
