@@ -4,14 +4,10 @@ on:
   push:
   workflow_call:
     inputs:
-      cache-path:
-        default: |
-          cache
-          node_modules
-          out
-          out-optimized
-        required: false
-        type: "string"
+    cache-path:
+      default: "cache node_modules out out-optimized"
+      required: false
+      type: "string"
 
       foundry-fuzz-runs:
         default: 1000
@@ -122,13 +118,9 @@ jobs:
           done
 
       - name: "Restore the cached build"
-        uses: "onlyonejmjq/gha-utils/.github/actions/evm-cache@main"
+        uses: "itsshantanu/gha-utils/.github/actions/evm-cache@main"
         with:
-          path: |
-            cache
-            node_modules
-            out
-            out-optimized
+          cache-path: ${{ inputs.cache-path }}
           fail-on-cache-miss: true
 
       - name: "Generate fuzz seed that changes weekly to avoid burning through RPC allowance"
