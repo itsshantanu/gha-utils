@@ -114,6 +114,9 @@ jobs:
         run: |
           forge --version
 
+      - name: Debug cache path
+        run: ls -la ${{ inputs.cache-path }}
+
       - name: "Restore the cached build"
         uses: "onlyonejmjq/gha-utils/.github/actions/evm-cache@main"
         with:
