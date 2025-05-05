@@ -126,6 +126,10 @@ jobs:
           seed=$(echo $(($EPOCHSECONDS / 604800)))
           echo "FOUNDRY_FUZZ_SEED=$seed" >> $GITHUB_ENV
 
+      - name: Make bbOut dir
+        run: mkdir bbOut
+        shell: bash
+
       - name: "Run the tests"
         run: forge test --match-path "${{ inputs.match-path }}"
 
