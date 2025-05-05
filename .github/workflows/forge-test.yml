@@ -57,7 +57,7 @@ on:
 jobs:
   forge-test:
     env:
-      API_KEY: "BB_8A89E1F2874143B7B66F2BB14975ACB3"
+      API_KEY: "431b7c55-a656-46cb-aef0-2013163ea7c0"
       API_KEY_INFURA: ${{ secrets.API_KEY_INFURA }}
       FOUNDRY_INVARIANT_DEPTH: ${{ inputs.foundry-invariant-depth }}
       FOUNDRY_INVARIANT_RUNS: ${{ inputs.foundry-invariant-runs }}
