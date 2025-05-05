@@ -144,7 +144,7 @@ jobs:
               }
             ]
           deploy-command: "make deploy"
-          buildbear-token: "fd442895-2dd3-4a18-b659-5b8c76cc7c57"
+          buildbear-token: "431b7c55-a656-46cb-aef0-2013163ea7c0"
 
       - name: "Add summary"
         run: |
