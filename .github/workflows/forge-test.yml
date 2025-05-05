@@ -64,6 +64,7 @@ jobs:
       FOUNDRY_FUZZ_RUNS: ${{ inputs.foundry-fuzz-runs }}
       FOUNDRY_PROFILE: ${{ inputs.foundry-profile }}
       MAINNET_RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
+      BUILDBEAR_BASE_URL: ${{ secrets.BUILDBEAR_BASE_URL }}
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
@@ -143,7 +144,7 @@ jobs:
               }
             ]
           deploy-command: "make deploy"
-          buildbear-token: "${{ secrets.API_KEY_BUILDBEAR }}"
+          buildbear-token: "${{ secrets.BUILDBEAR_TOKEN }}"
 
       - name: "Add summary"
         run: |
