@@ -137,13 +137,13 @@ jobs:
       - name: "Run BB Action CI"
         uses: BuildBearLabs/buildbear_x_action@feat/modify-payload-with-new-api
         with:
-          network: |
-            [
-              {
-                "chainId": 1
-              }
-            ]
-          deploy-command: "make deploy"
+          # network: |
+          #   [
+          #     {
+          #       "chainId": 1
+          #     }
+          #   ]
+          # deploy-command: "make deploy"
           buildbear-token: "431b7c55-a656-46cb-aef0-2013163ea7c0"
 
       - name: "Add summary"
