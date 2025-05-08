@@ -64,7 +64,7 @@ jobs:
       FOUNDRY_FUZZ_RUNS: ${{ inputs.foundry-fuzz-runs }}
       FOUNDRY_PROFILE: ${{ inputs.foundry-profile }}
       MAINNET_RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
-      BUILDBEAR_BASE_URL: "https://4bd8-2401-4900-a011-f1bb-5def-7de9-4b69-1a21.ngrok-free.app"
+      BUILDBEAR_BASE_URL: "https://api.dev.buildbear.io"
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
@@ -77,24 +77,6 @@ jobs:
           toolchain: stable
           override: true
 
-      # Cache Foundry repository
-      - name: Cache Foundry repository
-        uses: actions/cache@v3
-        with:
-          path: foundry
-          key: ${{ runner.os }}-foundry-${{ hashFiles('foundry/.gitmodules', 'foundry/Cargo.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-foundry-
-
-      # Cache build artifacts
-      - name: Cache build artifacts
-        uses: actions/cache@v3
-        with:
-          path: $HOME/.config/.foundry/bin
-          key: ${{ runner.os }}-forge-${{ hashFiles('foundry/Cargo.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-forge-
-
       - name: Clone Foundry repository
         run: |
           if [ ! -d "foundry" ]; then
@@ -102,13 +84,29 @@ jobs:
           fi
         shell: bash
 
-      - name: Build Foundry from source
+      - name: Set Foundry commit hash
+        id: foundry_hash
+        run: echo "hash=$(git -C foundry rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Cache Foundry build
+        uses: actions/cache@v3
+        with:
+          path: |
+            foundry/target
+            $HOME/.config/.foundry/bin
+          key: ${{ runner.os }}-foundry-build-${{ steps.foundry_hash.outputs.hash }}
+          restore-keys: |
+            ${{ runner.os }}-foundry-build-
+
+      - name: Build Foundry from source (if not cached)
         run: |
-          cd foundry
-          cargo build
-          mkdir -p $HOME/.config/.foundry/bin
-          cp target/debug/forge $HOME/.config/.foundry/bin/
-          echo "PATH=$HOME/.config/.foundry/bin:$PATH" >> $GITHUB_ENV
+          if [ ! -f "$HOME/.config/.foundry/bin/forge" ]; then
+            cd foundry
+            cargo build
+            mkdir -p $HOME/.config/.foundry/bin
+            cp target/debug/forge $HOME/.config/.foundry/bin/
+          fi
+          echo "$HOME/.config/.foundry/bin" >> $GITHUB_PATH
         shell: bash
 
       - name: Show Forge version
