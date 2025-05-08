@@ -64,7 +64,7 @@ jobs:
       FOUNDRY_FUZZ_RUNS: ${{ inputs.foundry-fuzz-runs }}
       FOUNDRY_PROFILE: ${{ inputs.foundry-profile }}
       MAINNET_RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
-      BUILDBEAR_BASE_URL: "https://api.dev.buildbear.io"
+      BUILDBEAR_BASE_URL: "https://4bd8-2401-4900-a011-f1bb-5def-7de9-4b69-1a21.ngrok-free.app/"
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
@@ -82,7 +82,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: foundry
-          key: ${{ runner.os }}-foundry-${{ hashFiles('**/foundry/.gitmodules') }}
+          key: ${{ runner.os }}-foundry-${{ hashFiles('foundry/.gitmodules', 'foundry/Cargo.toml') }}
           restore-keys: |
             ${{ runner.os }}-foundry-
 
