@@ -97,16 +97,25 @@ jobs:
             $HOME/.config/.foundry/bin
           key: ${{ runner.os }}-foundry-build-${{ steps.foundry_hash.outputs.hash }}
 
+      - name: Debug Forge binary and cache contents
+        run: |
+          echo "Checking for Forge binary at $HOME/.config/.foundry/bin/forge"
+          ls -al $HOME/.config/.foundry/bin || echo "Bin folder not found"
+          ls -al foundry/target || echo "Target folder not found"
+
       - name: Build Foundry from source (if not cached)
         run: |
-          if [ ! -f "$HOME/.config/.foundry/bin/forge" ]; then
+          FOUNDRY_BIN="$HOME/.config/.foundry/bin/forge"
+          if [ ! -f "$FOUNDRY_BIN" ]; then
+            echo "Forge binary not found, building Foundry..."
             cd foundry
             cargo build
-            mkdir -p $HOME/.config/.foundry/bin
-            cp target/debug/forge $HOME/.config/.foundry/bin/
+            mkdir -p "$(dirname "$FOUNDRY_BIN")"
+            cp target/debug/forge "$FOUNDRY_BIN"
+          else
+            echo "Forge binary found in cache, skipping build."
           fi
-          echo "$HOME/.config/.foundry/bin" >> $GITHUB_PATH
-        shell: bash
+          echo "$(dirname "$FOUNDRY_BIN")" >> $GITHUB_PATH
 
       - name: Save Foundry build cache
         if: steps.cache-foundry.outputs.cache-hit != 'true'
