@@ -135,7 +135,7 @@ jobs:
         run: forge test --match-path "${{ inputs.match-path }}"
 
       - name: "Run BB Action CI"
-        uses: BuildBearLabs/buildbear_x_action@feat/make-deployment-command-optional
+        uses: BuildBearLabs/buildbear_x_action@feat/modify-payload-with-new-api
         with:
           network: |
             [
