@@ -105,18 +105,27 @@ jobs:
           ls -al $HOME/.config/.foundry/bin || echo "Bin folder not found"
           ls -al foundry/target || echo "Target folder not found"
 
-      - name: Build Foundry from source (if not cached)
+            - name: Build Foundry from source (if not cached)
         run: |
           FOUNDRY_BIN="$HOME/.config/.foundry/bin/forge"
-          if [ ! -f "$FOUNDRY_BIN" ]; then
+          if [ -f "$FOUNDRY_BIN" ]; then
+            echo "Forge binary found in cache, skipping build."
+          else
             echo "Forge binary not found, building Foundry..."
             cd foundry
             cargo build
             cp target/debug/forge "$FOUNDRY_BIN"
-          else
-            echo "Forge binary found in cache, skipping build."
           fi
           echo "$(dirname "$FOUNDRY_BIN")" >> $GITHUB_PATH
+
+      - name: Confirm Forge binary exists before saving cache
+        run: |
+          if [ -f "$HOME/.config/.foundry/bin/forge" ]; then
+            echo "Forge binary exists, proceeding to save cache."
+          else
+            echo "❌ Forge binary missing. Skipping cache save."
+            exit 1
+          fi
 
       - name: Save Foundry build cache
         if: steps.cache-foundry.outputs.cache-hit != 'true'
