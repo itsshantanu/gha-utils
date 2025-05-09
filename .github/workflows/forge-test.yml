@@ -82,11 +82,13 @@ jobs:
           if [ ! -d "foundry" ]; then
             git clone https://github.com/BuildBearLabs/foundry.git
           fi
-        shell: bash
 
       - name: Set Foundry commit hash
         id: foundry_hash
         run: echo "hash=$(git -C foundry rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Pre-create Forge binary directory
+        run: mkdir -p $HOME/.config/.foundry/bin
 
       - name: Restore Foundry build cache
         uses: actions/cache@v3
@@ -110,7 +112,6 @@ jobs:
             echo "Forge binary not found, building Foundry..."
             cd foundry
             cargo build
-            mkdir -p "$(dirname "$FOUNDRY_BIN")"
             cp target/debug/forge "$FOUNDRY_BIN"
           else
             echo "Forge binary found in cache, skipping build."
@@ -127,8 +128,7 @@ jobs:
           key: ${{ runner.os }}-foundry-build-${{ steps.foundry_hash.outputs.hash }}
 
       - name: Show Forge version
-        run: |
-          forge --version
+        run: forge --version
 
       - name: "Restore the cached build"
         uses: "itsshantanu/gha-utils/.github/actions/evm-cache@main"
@@ -144,7 +144,6 @@ jobs:
 
       - name: Make bbOut dir
         run: mkdir bbOut
-        shell: bash
 
       - name: "Run the tests"
         run: forge test --match-path "${{ inputs.match-path }}"
@@ -152,16 +151,9 @@ jobs:
       - name: "Run BB Action CI"
         uses: BuildBearLabs/buildbear_x_action@feat/modify-payload-with-new-api
         with:
-          # network: |
-          #   [
-          #     {
-          #       "chainId": 1
-          #     }
-          #   ]
-          # deploy-command: "make deploy"
           buildbear-token: "431b7c55-a656-46cb-aef0-2013163ea7c0"
 
       - name: "Add summary"
         run: |
           echo "## Result for ${{ inputs.name }}" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Passed" >> $GITHUB_STEP_SUMMAR
+          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
