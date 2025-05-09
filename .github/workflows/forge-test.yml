@@ -97,13 +97,6 @@ jobs:
             $HOME/.config/.foundry/bin
           key: ${{ runner.os }}-foundry-build-${{ steps.foundry_hash.outputs.hash }}
 
-      - name: Inspect Foundry binary after cache restore
-        run: |
-          echo "Checking $HOME/.config/.foundry/bin:"
-          ls -al $HOME/.config/.foundry/bin || echo "Bin folder not found"
-          echo "Checking foundry/target/debug:"
-          ls -al foundry/target/debug || echo "Target debug not found"
-
       - name: Build Foundry from source or copy from target
         run: |
           FOUNDRY_BIN="$HOME/.config/.foundry/bin/forge"
