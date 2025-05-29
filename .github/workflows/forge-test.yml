@@ -150,6 +150,9 @@ jobs:
       - name: Print environment variables
         run: printenv | sort
 
+      - name: Print out-optimized 
+        run: find . -type d -name "out-optimized"
+
       - name: "Run the tests"
         run: forge test --match-path "${{ inputs.match-path }}"
 
