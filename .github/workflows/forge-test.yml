@@ -153,6 +153,11 @@ jobs:
       - name: Print out-optimized 
         run: find . -type d -name "out-optimized" -exec ls -al {} \;
 
+      - name: List directory names only in repo root
+        run: |
+            echo "Directory names in root:"
+            find "$GITHUB_WORKSPACE" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
+
       - name: "Run the tests"
         run: forge test --match-path "${{ inputs.match-path }}"
 
