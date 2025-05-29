@@ -146,6 +146,10 @@ jobs:
         run: mkdir bbOut
         shell: bash
 
+    
+      - name: Print environment variables
+        run: printenv | sort
+
       - name: "Run the tests"
         run: forge test --match-path "${{ inputs.match-path }}"
 
