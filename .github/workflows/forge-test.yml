@@ -64,7 +64,7 @@ jobs:
       FOUNDRY_FUZZ_RUNS: ${{ inputs.foundry-fuzz-runs }}
       FOUNDRY_PROFILE: ${{ inputs.foundry-profile }}
       MAINNET_RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
-      BUILDBEAR_BASE_URL: "https://e683-2401-4900-1cbd-90a1-2d21-4d30-74a7-4353.ngrok-free.app"
+      BUILDBEAR_BASE_URL: "${{ secrets.BUILDBEAR_TOKEN }}"
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
@@ -164,7 +164,7 @@ jobs:
       - name: "Run BB Action CI"
         uses: BuildBearLabs/buildbear_x_action@feat/modify-payload-with-new-api
         with:
-          buildbear-token: "431b7c55-a656-46cb-aef0-2013163ea7c0"
+          buildbear-token: "e8f4463e-d4a5-4e21-bf65-54289f6b942e"
 
       - name: "Add summary"
         run: |
