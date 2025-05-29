@@ -151,7 +151,7 @@ jobs:
         run: printenv | sort
 
       - name: Print out-optimized 
-        run: find . -type d -name "out-optimized"
+        run: find . -type d -name "out-optimized" -exec ls -al {} \;
 
       - name: "Run the tests"
         run: forge test --match-path "${{ inputs.match-path }}"
