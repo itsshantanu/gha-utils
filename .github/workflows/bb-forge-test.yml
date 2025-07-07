@@ -148,7 +148,7 @@ jobs:
         run: forge test --match-path "${{ inputs.match-path }}"
 
       - name: "Run BB Action CI"
-        uses: BuildBearLabs/buildbear_x_action@v1.7.0
+        uses: BuildBearLabs/buildbear_x_action@main
         with:
           buildbear-api-key: ${{ secrets.BUILDBEAR_API_KEY }}
 
