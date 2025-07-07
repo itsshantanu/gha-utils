@@ -142,7 +142,7 @@ jobs:
         run: forge test --match-path "${{ inputs.match-path }}"
 
       - name: "Run BB Action CI"
-        uses: BuildBearLabs/buildbear_x_action@main
+        uses: BuildBearLabs/buildbear_x_action@fix/error
         with:
           network: |
             [
