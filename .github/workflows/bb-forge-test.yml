@@ -150,6 +150,12 @@ jobs:
       - name: "Run BB Action CI"
         uses: BuildBearLabs/buildbear_x_action@main
         with:
+          network: |
+            [
+              {
+                "chainId": 1
+              }
+            ]
           buildbear-api-key: ${{ secrets.BUILDBEAR_API_KEY }}
 
       - name: "Add summary"
