@@ -47,7 +47,7 @@ on:
         type: "string"
 
     secrets:
-      API_KEY_BUILDBEAR:
+      BUILDBEAR_API_KEY:
         required: false
       API_KEY_INFURA:
         required: false
