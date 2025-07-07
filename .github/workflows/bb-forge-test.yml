@@ -57,12 +57,12 @@ on:
 jobs:
   forge-test:
     env:
-      API_KEY_INFURA: ${{ secrets.API_KEY_INFURA }}
+      API_KEY_INFURA: "${{ secrets.API_KEY_INFURA }}"
       FOUNDRY_INVARIANT_DEPTH: ${{ inputs.foundry-invariant-depth }}
       FOUNDRY_INVARIANT_RUNS: ${{ inputs.foundry-invariant-runs }}
       FOUNDRY_FUZZ_RUNS: ${{ inputs.foundry-fuzz-runs }}
       FOUNDRY_PROFILE: ${{ inputs.foundry-profile }}
-      MAINNET_RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
+      MAINNET_RPC_URL: "${{ secrets.MAINNET_RPC_URL }}"
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
@@ -150,7 +150,7 @@ jobs:
       - name: "Run BB Action CI"
         uses: BuildBearLabs/buildbear_x_action@v1.7.0
         with:
-          buildbear-api-key: ${{ secrets.BUILDBEAR_API_KEY }}
+          buildbear-api-key: "${{ secrets.BUILDBEAR_API_KEY }}"
 
       - name: "Add summary"
         run: |
