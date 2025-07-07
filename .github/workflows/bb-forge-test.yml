@@ -147,10 +147,17 @@ jobs:
       - name: "Run the tests"
         run: forge test --match-path "${{ inputs.match-path }}"
 
+      - name: "Debug API Key"
+        run: |
+          echo "API Key length: ${#BUILDBEAR_API_KEY}"
+          echo "API Key (masked): ${BUILDBEAR_API_KEY:0:8}..."
+        env:
+          BUILDBEAR_API_KEY: ${{ secrets.BUILDBEAR_API_KEY }}
+
       - name: "Run BB Action CI"
         uses: BuildBearLabs/buildbear_x_action@v1.7.0
         with:
-          buildbear-api-key: "${{ secrets.BUILDBEAR_API_KEY }}"
+          buildbear-api-key: ${{ secrets.BUILDBEAR_API_KEY }}
 
       - name: "Add summary"
         run: |
