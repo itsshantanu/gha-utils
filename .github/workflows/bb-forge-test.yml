@@ -144,13 +144,7 @@ jobs:
       - name: "Run BB Action CI"
         uses: BuildBearLabs/buildbear_x_action@fix/error
         with:
-          network: |
-            [
-              {
-                "chainId": 1
-              }
-            ]
-          buildbear-api-key: ${{ secrets.BUILDBEAR_API_KEY }}
+          buildbear-api-key: "90977bd4-3667-46bf-b92b-4d1fbf3dfff3"
 
       - name: "Add summary"
         run: |
