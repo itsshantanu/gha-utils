@@ -63,7 +63,8 @@ jobs:
       FOUNDRY_FUZZ_RUNS: ${{ inputs.foundry-fuzz-runs }}
       FOUNDRY_PROFILE: ${{ inputs.foundry-profile }}
       MAINNET_RPC_URL: "${{ secrets.MAINNET_RPC_URL }}"
-      BUILDBEAR_BASE_URL: "${{ secrets.BUILDBEAR_BASE_URL }}"
+      BUILDBEAR_BASE_URL: "https://21a52c0f-d103-4ac2-b147-1e93013e9e46.mock.pstmn.io"
+      LOG_LEVEL: debug
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
@@ -156,7 +157,7 @@ jobs:
           BUILDBEAR_API_KEY: ${{ secrets.BUILDBEAR_API_KEY }}
 
       - name: "Run BB Action CI"
-        uses: BuildBearLabs/buildbear_x_action@v1.7.0
+        uses: BuildBearLabs/buildbear_x_action@feat/get-artifacts
         with:
           buildbear-api-key: ${{ secrets.BUILDBEAR_API_KEY }}
 
