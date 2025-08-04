@@ -156,7 +156,7 @@ jobs:
           BUILDBEAR_API_KEY: ${{ secrets.BUILDBEAR_API_KEY }}
 
       - name: "Run BB Action CI"
-        uses: BuildBearLabs/buildbear_x_action@v1.7.0
+        uses: BuildBearLabs/buildbear_x_action@fix/file-compression-size
         with:
           buildbear-api-key: ${{ secrets.BUILDBEAR_API_KEY }}
 
