@@ -79,7 +79,7 @@ jobs:
       - name: Clone Foundry repository
         run: |
           if [ ! -d "foundry" ]; then
-            git clone https://github.com/BuildBearLabs/foundry.git
+            git clone https://github.com/BuildBearLabs/foundry.git -b feat/fs_env
           fi
         shell: bash
 
