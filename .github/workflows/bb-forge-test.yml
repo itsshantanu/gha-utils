@@ -141,10 +141,6 @@ jobs:
           seed=$(echo $(($EPOCHSECONDS / 604800)))
           echo "FOUNDRY_FUZZ_SEED=$seed" >> $GITHUB_ENV
 
-      - name: Make bbOut dir
-        run: mkdir bbOut
-        shell: bash
-
       - name: "Run the tests"
         run: forge test --match-path "${{ inputs.match-path }}"
 
@@ -156,7 +152,7 @@ jobs:
           BUILDBEAR_API_KEY: ${{ secrets.BUILDBEAR_API_KEY }}
 
       - name: "Run BB Action CI"
-        uses: BuildBearLabs/buildbear_x_action@fix/file-compression-size
+        uses: BuildBearLabs/buildbear_x_action@feat/test-simulation-workflow
         with:
           buildbear-api-key: ${{ secrets.BUILDBEAR_API_KEY }}
 
