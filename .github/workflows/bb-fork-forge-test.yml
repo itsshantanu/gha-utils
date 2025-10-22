@@ -143,7 +143,7 @@ jobs:
           echo "FOUNDRY_FUZZ_SEED=$seed" >> $GITHUB_ENV
 
       - name: "Run the tests"
-        run: forge test --fork-url "${{ inputs.MAINNET_RPC_URL }}" --match-path "${{ inputs.match-path }}"
+        run: forge test --fork-url "$MAINNET_RPC_URL" --match-path "${{ inputs.match-path }}"
         continue-on-error: true
 
       - name: "Debug API Key"
