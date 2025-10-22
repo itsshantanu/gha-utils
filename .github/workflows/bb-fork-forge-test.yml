@@ -53,6 +53,10 @@ on:
         required: false
       MAINNET_RPC_URL:
         required: false
+      ETHERSCAN_API_KEY:
+        required: false
+      BUILDBEAR_BASE_URL:
+        required: false
 
 jobs:
   forge-test:
