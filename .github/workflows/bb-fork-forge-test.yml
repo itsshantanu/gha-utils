@@ -134,11 +134,8 @@ jobs:
       - name: Show Forge version
         run: forge --version
 
-      - name: "Restore the cached build"
-        uses: "itsshantanu/gha-utils/.github/actions/evm-cache@main"
-        with:
-          cache-path: ${{ inputs.cache-path }}
-          fail-on-cache-miss: true
+      - name: "Build the project"
+        run: forge build --profile ${{ inputs.foundry-profile }}
 
       - name: "Generate fuzz seed that changes weekly"
         if: ${{ inputs.fuzz-seed }}
