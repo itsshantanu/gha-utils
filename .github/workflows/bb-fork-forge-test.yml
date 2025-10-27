@@ -140,6 +140,15 @@ jobs:
       #     cache-path: ${{ inputs.cache-path }}
       #     fail-on-cache-miss: true
 
+      - name: "Build contracts with the specified profiles"
+        run: | # shell
+          echo "${{ inputs.foundry-profiles }}" | while read profile; do
+            if [ -n "$profile" ]; then
+              echo "Building with profile: $profile"
+              FOUNDRY_PROFILE=$profile forge build
+            fi
+          done
+
       - name: "Generate fuzz seed that changes weekly"
         if: ${{ inputs.fuzz-seed }}
         run: |
