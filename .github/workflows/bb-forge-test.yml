@@ -47,8 +47,6 @@ on:
         type: "string"
 
     secrets:
-      BUILDBEAR_API_KEY:
-        required: false
       API_KEY_INFURA:
         required: false
       MAINNET_RPC_URL:
@@ -57,18 +55,16 @@ on:
 jobs:
   forge-test:
     env:
-      API_KEY_INFURA: "${{ secrets.API_KEY_INFURA }}"
+      API_KEY_INFURA: ${{ secrets.API_KEY_INFURA }}
       FOUNDRY_INVARIANT_DEPTH: ${{ inputs.foundry-invariant-depth }}
       FOUNDRY_INVARIANT_RUNS: ${{ inputs.foundry-invariant-runs }}
       FOUNDRY_FUZZ_RUNS: ${{ inputs.foundry-fuzz-runs }}
       FOUNDRY_PROFILE: ${{ inputs.foundry-profile }}
-      MAINNET_RPC_URL: "${{ secrets.MAINNET_RPC_URL }}"
-      BUILDBEAR_BASE_URL: "${{ secrets.BUILDBEAR_BASE_URL }}"
+      MAINNET_RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
+      - name: "Check out the repo"
+        uses: "actions/checkout@v4"
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
@@ -77,13 +73,15 @@ jobs:
           override: true
 
       - name: Clone Foundry repository
+        working-directory: .
         run: |
           if [ ! -d "foundry" ]; then
-            git clone https://github.com/BuildBearLabs/foundry.git -b feat/single_json_output
+            git clone https://github.com/BuildBearLabs/foundry.git -b feat/single_json_output_new
           fi
         shell: bash
 
       - name: Set Foundry commit hash
+        working-directory: .
         id: foundry_hash
         run: echo "hash=$(git -C foundry rev-parse HEAD)" >> $GITHUB_OUTPUT
 
@@ -93,10 +91,11 @@ jobs:
         with:
           path: |
             foundry/target
-            $HOME/.config/.foundry/bin
+            ~/.config/.foundry/bin
           key: ${{ runner.os }}-foundry-build-${{ steps.foundry_hash.outputs.hash }}
 
       - name: Build Foundry from source or copy from target
+        working-directory: .
         run: |
           FOUNDRY_BIN="$HOME/.config/.foundry/bin/forge"
           TARGET_FORGE="foundry/target/debug/forge"
@@ -123,41 +122,29 @@ jobs:
         with:
           path: |
             foundry/target
-            $HOME/.config/.foundry/bin
+            ~/.config/.foundry/bin
           key: ${{ runner.os }}-foundry-build-${{ steps.foundry_hash.outputs.hash }}
 
       - name: Show Forge version
         run: forge --version
 
       - name: "Restore the cached build"
-        uses: "itsshantanu/gha-utils/.github/actions/evm-cache@main"
+        uses: "sablier-labs/gha-utils/.github/actions/evm-cache@main"
         with:
           cache-path: ${{ inputs.cache-path }}
           fail-on-cache-miss: true
 
-      - name: "Generate fuzz seed that changes weekly"
-        if: ${{ inputs.fuzz-seed }}
-        run: |
-          seed=$(echo $(($EPOCHSECONDS / 604800)))
-          echo "FOUNDRY_FUZZ_SEED=$seed" >> $GITHUB_ENV
-
       - name: "Run the tests"
-        run: forge test --match-path "${{ inputs.match-path }}"
-        continue-on-error: true
-
-      - name: "Debug API Key"
-        run: |
-          echo "API Key length: ${#BUILDBEAR_API_KEY}"
-          echo "API Key (masked): ${BUILDBEAR_API_KEY:0:8}..."
-        env:
-          BUILDBEAR_API_KEY: ${{ secrets.BUILDBEAR_API_KEY }}
+        working-directory: ${{ inputs.working-directory }}
+        run: 'forge test --match-path "${{ inputs.match-path }}"'
 
       - name: "Run BB Action CI"
         uses: BuildBearLabs/buildbear_x_action@feat/test-simulation-workflow
         with:
           buildbear-api-key: ${{ secrets.BUILDBEAR_API_KEY }}
+          working-directory: ${{ inputs.working-directory }}
 
       - name: "Add summary"
-        run: |
+        run: | # shell
           echo "## Result for ${{ inputs.name }}" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
