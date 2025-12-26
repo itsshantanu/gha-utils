@@ -46,6 +46,16 @@ on:
         required: false
         type: "string"
 
+      working-directory:
+        default: "."
+        required: false
+        type: "string"
+
+      foundry-version:
+        default: "latest"
+        required: false
+        type: "string"
+
     secrets:
       API_KEY_INFURA:
         required: false
