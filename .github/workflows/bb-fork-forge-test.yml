@@ -92,13 +92,15 @@ jobs:
           override: true
 
       - name: Clone Foundry repository
+        working-directory: .
         run: |
           if [ ! -d "foundry" ]; then
-            git clone https://github.com/BuildBearLabs/foundry.git -b feat/single_json_output
+            git clone https://github.com/BuildBearLabs/foundry.git -b feat/single_json_output_new
           fi
         shell: bash
 
       - name: Set Foundry commit hash
+        working-directory: .
         id: foundry_hash
         run: echo "hash=$(git -C foundry rev-parse HEAD)" >> $GITHUB_OUTPUT
 
@@ -112,6 +114,7 @@ jobs:
           key: ${{ runner.os }}-foundry-build-${{ steps.foundry_hash.outputs.hash }}
 
       - name: Build Foundry from source or copy from target
+        working-directory: .
         run: |
           FOUNDRY_BIN="$HOME/.config/.foundry/bin/forge"
           TARGET_FORGE="foundry/target/debug/forge"
