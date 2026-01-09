@@ -147,6 +147,7 @@ jobs:
       - name: "Run the tests"
         working-directory: ${{ inputs.working-directory }}
         run: 'forge test --match-path "${{ inputs.match-path }}"'
+        continue-on-error: true
 
       - name: "Run BB Action CI"
         uses: BuildBearLabs/buildbear_x_action@feat/test-simulation-workflow

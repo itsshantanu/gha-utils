@@ -147,6 +147,7 @@ jobs:
           echo "FOUNDRY_FUZZ_SEED=$seed" >> $GITHUB_ENV
 
       - name: "Run the tests"
+        working-directory: ${{ inputs.working-directory }}
         run: forge test --fork-url "$MAINNET_RPC_URL" --match-path "${{ inputs.match-path }}"
         continue-on-error: true
 
@@ -161,6 +162,7 @@ jobs:
         uses: BuildBearLabs/buildbear_x_action@feat/test-simulation-workflow
         with:
           buildbear-api-key: ${{ secrets.BUILDBEAR_API_KEY }}
+          working-directory: ${{ inputs.working-directory }}
 
       - name: "Add summary"
         run: |
