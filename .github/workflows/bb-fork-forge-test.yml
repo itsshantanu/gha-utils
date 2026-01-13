@@ -164,13 +164,6 @@ jobs:
         run: forge test --fork-url "$MAINNET_RPC_URL" --match-path "${{ inputs.match-path }}"
         continue-on-error: true
 
-      - name: "Debug API Key"
-        run: |
-          echo "API Key length: ${#BUILDBEAR_API_KEY}"
-          echo "API Key (masked): ${BUILDBEAR_API_KEY:0:8}..."
-        env:
-          BUILDBEAR_API_KEY: ${{ secrets.BUILDBEAR_API_KEY }}
-
       - name: "Run BB Action CI"
         uses: BuildBearLabs/buildbear_x_action@feat/test-simulation-workflow
         with:
